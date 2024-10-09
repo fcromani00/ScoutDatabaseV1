@@ -9,15 +9,20 @@ if 'data' in st.session_state:
     data = st.session_state['data']
 else:
     st.write("Os dados não foram carregados. Por favor, volte para a Página 1 para carregar os dados.")
-    st.stop()  # Adiciona esta linha para parar a execução se os dados não forem carregados.
+    st.stop()  # Para a execução se os dados não estiverem disponíveis.
 
-# Limpa os dados e remove valores nulos
-data['Short Name'] = data['Short Name'].dropna().astype(str)
+# Garantir que a coluna 'Short Name' não contenha valores nulos e sejam tratados como strings
+data['Short Name'] = data['Short Name'].fillna('').astype(str)
+
+# Debug: Verifique os tipos de dados na coluna
+st.write("Tipos de dados na coluna 'Short Name':", data['Short Name'].apply(type).unique())
 
 st.subheader('Player👤')
 
-# Use dropna() para garantir que a lista não tenha valores nulos
+# Use sorted() após garantir que todos os valores sejam strings
 player_name = st.selectbox('Player Name', sorted(list(data['Short Name'].unique())))
+
+# Filtrar os dados com base no nome do jogador selecionado
 data = data[data['Short Name'] == player_name]
 performance = pd.merge(left=data, right=performance, how='left', left_on='Player ID', right_on='Player ID')
 performance_df = performance[['Season', 'Tournament', 'Games', 'Wins', 'Draws', 'Losses', 
@@ -46,9 +51,7 @@ with col3:
         </div>''')
 
 st.dataframe(performance_df)
-#st.text_area('Scout Report')
-
-#st.text_area('Scout Report')
+# st.text_area('Scout Report')
 
 # col1, col2, col3 = st.columns([1,4,1])
 # with col2:
