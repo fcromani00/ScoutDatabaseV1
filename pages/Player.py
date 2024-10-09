@@ -14,9 +14,6 @@ else:
 # Garantir que a coluna 'Short Name' não contenha valores nulos e sejam tratados como strings
 data['Short Name'] = data['Short Name'].fillna('').astype(str)
 
-# Debug: Verifique os tipos de dados na coluna
-st.write("Tipos de dados na coluna 'Short Name':", data['Short Name'].apply(type).unique())
-
 st.subheader('Player👤')
 
 # Use sorted() após garantir que todos os valores sejam strings
