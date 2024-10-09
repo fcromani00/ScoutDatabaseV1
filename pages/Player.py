@@ -20,37 +20,47 @@ st.write("Tipos de dados na coluna 'Short Name':", data['Short Name'].apply(type
 st.subheader('Player👤')
 
 # Use sorted() após garantir que todos os valores sejam strings
-player_name = st.selectbox('Player Name', sorted(list(data['Short Name'].unique())))
+player_names = sorted(list(data['Short Name'].unique()))
+player_name = st.selectbox('Player Name', player_names)
 
-# Filtrar os dados com base no nome do jogador selecionado
-data = data[data['Short Name'] == player_name]
-performance = pd.merge(left=data, right=performance, how='left', left_on='Player ID', right_on='Player ID')
-performance_df = performance[['Season', 'Tournament', 'Games', 'Wins', 'Draws', 'Losses', 
-                               'Goal Difference', 'Minutes', 'Starting XI', 'Used Sub', 
-                               'Goals Scored', 'Assists', 'Own Goals', 'Yellow Cards', 
-                               'Double Yellows', 'Red Cards']]
+# Verificar se um jogador foi selecionado
+if player_name:  # Se um nome de jogador for selecionado
+    data = data[data['Short Name'] == player_name]
+    
+    # Verifique se o DataFrame não está vazio
+    if not data.empty:
+        performance = pd.merge(left=data, right=performance, how='left', left_on='Player ID', right_on='Player ID')
+        performance_df = performance[['Season', 'Tournament', 'Games', 'Wins', 'Draws', 'Losses', 
+                                       'Goal Difference', 'Minutes', 'Starting XI', 'Used Sub', 
+                                       'Goals Scored', 'Assists', 'Own Goals', 'Yellow Cards', 
+                                       'Double Yellows', 'Red Cards']]
 
-col1, col2, col3 = st.columns([4, 1, 1])
-with col1:
-    st.subheader(data['Full Name'].iloc[0])
-    st.write(f"Age: {data['Age'].iloc[0]}")
-    st.write(f"Height: {int(data['Height (cm)'].iloc[0])}cm")
-    st.write(f"Position: {data['Position'].iloc[0]}")
-    st.write(f"Market Value: {data['Market Value'].iloc[0]}")
+        col1, col2, col3 = st.columns([4, 1, 1])
+        with col1:
+            st.subheader(data['Full Name'].iloc[0])
+            st.write(f"Age: {data['Age'].iloc[0] if pd.notna(data['Age'].iloc[0]) else 'N/A'}")
+            st.write(f"Height: {int(data['Height (cm)'].iloc[0])}cm" if pd.notna(data['Height (cm)'].iloc[0]) else 'Height: N/A')
+            st.write(f"Position: {data['Position'].iloc[0] if pd.notna(data['Position'].iloc[0]) else 'N/A'}")
+            st.write(f"Market Value: {data['Market Value'].iloc[0] if pd.notna(data['Market Value'].iloc[0]) else 'N/A'}")
 
-# Colocar as imagens na terceira coluna (canto superior direito)
-with col2:
-    st.image(data['Team img url'].iloc[0], use_column_width='auto')
+        # Colocar as imagens na terceira coluna (canto superior direito)
+        with col2:
+            st.image(data['Team img url'].iloc[0], use_column_width='auto')
 
-with col3:
-    st.html(f'''<div style="text-align: center;">
-            <img src="{data['Player img url'].iloc[0]}" 
-                 style="max-width:100%; border-radius: 25px; border: 3px solid black; margin-bottom: 10px;">
-            <img src="{data['flag_img_url'].iloc[0]}" 
-                 style="max-width:50%; border-radius: 5px;">
-        </div>''')
+        with col3:
+            st.html(f'''<div style="text-align: center;">
+                    <img src="{data['Player img url'].iloc[0]}" 
+                         style="max-width:100%; border-radius: 25px; border: 3px solid black; margin-bottom: 10px;">
+                    <img src="{data['flag_img_url'].iloc[0]}" 
+                         style="max-width:50%; border-radius: 5px;">
+                </div>''')
 
-st.dataframe(performance_df)
+        st.dataframe(performance_df)
+    else:
+        st.write("Nenhum dado encontrado para o jogador selecionado.")
+else:
+    st.write("Por favor, selecione um jogador.")
+
 # st.text_area('Scout Report')
 
 # col1, col2, col3 = st.columns([1,4,1])
