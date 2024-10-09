@@ -9,23 +9,29 @@ if 'data' in st.session_state:
     data = st.session_state['data']
 else:
     st.write("Os dados não foram carregados. Por favor, volte para a Página 1 para carregar os dados.")
+    st.stop()  # Adiciona esta linha para parar a execução se os dados não forem carregados.
+
+# Limpa os dados e remove valores nulos
+data['Short Name'] = data['Short Name'].dropna().astype(str)
 
 st.subheader('Player👤')
 
-player_name = st.selectbox('Player Name',sorted(list(data['Short Name'].unique())))
+# Use dropna() para garantir que a lista não tenha valores nulos
+player_name = st.selectbox('Player Name', sorted(list(data['Short Name'].unique())))
 data = data[data['Short Name'] == player_name]
 performance = pd.merge(left=data, right=performance, how='left', left_on='Player ID', right_on='Player ID')
-performance_df = performance[['Season','Tournament','Games','Wins','Draws','Losses','Goal Difference','Minutes','Starting XI','Used Sub','Goals Scored','Assists','Own Goals','Yellow Cards','Double Yellows','Red Cards']]
+performance_df = performance[['Season', 'Tournament', 'Games', 'Wins', 'Draws', 'Losses', 
+                               'Goal Difference', 'Minutes', 'Starting XI', 'Used Sub', 
+                               'Goals Scored', 'Assists', 'Own Goals', 'Yellow Cards', 
+                               'Double Yellows', 'Red Cards']]
 
-col1, col2, col3 = st.columns([4,1,1])
+col1, col2, col3 = st.columns([4, 1, 1])
 with col1:
     st.subheader(data['Full Name'].iloc[0])
     st.write(f"Age: {data['Age'].iloc[0]}")
-    # st.write(f"Birth Date: {dados['Birth Date'].iloc[0].strftime('%Y/%m/%d')}")
     st.write(f"Height: {int(data['Height (cm)'].iloc[0])}cm")
     st.write(f"Position: {data['Position'].iloc[0]}")
     st.write(f"Market Value: {data['Market Value'].iloc[0]}")
-
 
 # Colocar as imagens na terceira coluna (canto superior direito)
 with col2:
@@ -38,7 +44,10 @@ with col3:
             <img src="{data['flag_img_url'].iloc[0]}" 
                  style="max-width:50%; border-radius: 5px;">
         </div>''')
+
 st.dataframe(performance_df)
+#st.text_area('Scout Report')
+
 #st.text_area('Scout Report')
 
 # col1, col2, col3 = st.columns([1,4,1])
