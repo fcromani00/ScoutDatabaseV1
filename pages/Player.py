@@ -53,10 +53,9 @@ if player_name:  # Se um nome de jogador for selecionado
                 </div>''')
 
         st.dataframe(performance_df)
-    else:
-        st.write("Nenhum dado encontrado para o jogador selecionado.")
+
 else:
-    st.write("Por favor, selecione um jogador.")
+    st.write("Please select a Player.")
 
 # st.text_area('Scout Report')
 
