@@ -115,7 +115,7 @@ with st.container():
 
 refresh = st.button('Refresh Database')
 if refresh:
-    with st.spinner('Atualizando a base de dados...'):
+    with st.spinner('Updating the database...'):
         refresh_database()
-        st.session_state['data'] = load_data()
+        st.cache_data.clear()
         st.success('Database refreshed successfully!')
