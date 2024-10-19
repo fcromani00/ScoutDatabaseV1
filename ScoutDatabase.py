@@ -61,36 +61,36 @@ with st.container():
     with col4:
         st.markdown("[PlaymakerStats](https://www.playmakerstats.com/)")        
 
-# with st.sidebar:
-#     st.title('Filter Conditions🔍')
-#     nationality = st.multiselect('Nationality', ['Any'] + sorted(list(data['Nationality'].unique())), default=['Any'])
-#     if 'Any' not in nationality:
-#         data = data[data['Nationality'].isin(nationality)]
+with st.sidebar:
+    st.title('Filter Conditions🔍')
+    nationality = st.multiselect('Nationality', ['Any'] + sorted(list(data['Nationality'].unique())), default=['Any'])
+    if 'Any' not in nationality:
+        data = data[data['Nationality'].isin(nationality)]
 
-#     age_min, age_max = st.slider(
-#         "Age",
-#         min_value=int(raw_data['Age'].min()),
-#         max_value=int(raw_data['Age'].max()),
-#         value=[int(data['Age'].min()), int(data['Age'].max())]
-#     )
-#     data = data[(data['Age'] >= age_min) & (data['Age'] <= age_max)]
+    age_min, age_max = st.slider(
+        "Age",
+        min_value=int(raw_data['Age'].min()),
+        max_value=int(raw_data['Age'].max()),
+        value=[int(data['Age'].min()), int(data['Age'].max())]
+    )
+    data = data[(data['Age'] >= age_min) & (data['Age'] <= age_max)]
 
-#     height_min, height_max = st.slider(
-#         "Height (cm)",
-#         min_value=int(raw_data['Height (cm)'].min()),
-#         max_value=int(raw_data['Height (cm)'].max()),
-#         value=[int(data['Height (cm)'].min()), int(data['Height (cm)'].max())]
-#     )
-#     data = data[
-#         (data['Height (cm)'].isna()) | ((data['Height (cm)'] >= height_min) & (data['Height (cm)'] <= height_max))]
+    height_min, height_max = st.slider(
+        "Height (cm)",
+        min_value=int(raw_data['Height (cm)'].min()),
+        max_value=int(raw_data['Height (cm)'].max()),
+        value=[int(data['Height (cm)'].min()), int(data['Height (cm)'].max())]
+    )
+    data = data[
+        (data['Height (cm)'].isna()) | ((data['Height (cm)'] >= height_min) & (data['Height (cm)'] <= height_max))]
 
-#     foot = st.selectbox('Preferred Foot', ['Any'] + list(data['Foot'].unique()))
-#     if foot != 'Any':
-#         data = data[data['Foot'] == foot]
+    foot = st.selectbox('Preferred Foot', ['Any'] + list(data['Foot'].unique()))
+    if foot != 'Any':
+        data = data[data['Foot'] == foot]
 
-#     position = st.multiselect('Main Position', ['Any'] + sorted(list(data['Position'].unique())), default=['Any'])
-#     if 'Any' not in position:
-#         data = data[data['Position'].isin(position)]
+    position = st.multiselect('Main Position', ['Any'] + sorted(list(data['Position'].unique())), default=['Any'])
+    if 'Any' not in position:
+        data = data[data['Position'].isin(position)]
 
 with st.container():
     st.write('---')
